@@ -1,35 +1,99 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import generate_password from "./password-generator";
+import "./App.css";
+import { set } from "lodash";
+
+interface Settings {
+  lowercase: boolean;
+  uppercase: boolean;
+  numeric: boolean;
+  symbols: boolean;
+  length: number;
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [config, setConfig] = useState<Settings>({
+    lowercase: true,
+    uppercase: true,
+    numeric: true,
+    symbols: true,
+    length: 15,
+  });
+
+  let password = generate_password(
+    config.lowercase,
+    config.uppercase,
+    config.numeric,
+    config.symbols,
+    config.length
+  );
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <div className="class">{password}</div>
+      a-z:{" "}
+      <input
+        type="checkbox"
+        name="lowercase"
+        onChange={() =>
+          setConfig({
+            ...config,
+            lowercase: !config.lowercase,
+          })
+        }
+        checked={config.lowercase}
+      />
+      A-Z:{" "}
+      <input
+        type="checkbox"
+        name="uppercase"
+        onChange={() =>
+          setConfig({
+            ...config,
+            uppercase: !config.uppercase,
+          })
+        }
+        checked={config.uppercase}
+      />
+      0-9:{" "}
+      <input
+        type="checkbox"
+        name="numeric"
+        onChange={() =>
+          setConfig({
+            ...config,
+            numeric: !config.numeric,
+          })
+        }
+        checked={config.numeric}
+      />
+      !@#$%^&*:{" "}
+      <input
+        type="checkbox"
+        name="symbols"
+        onChange={() =>
+          setConfig({
+            ...config,
+            symbols: !config.symbols,
+          })
+        }
+        checked={config.symbols}
+      />
+      Length: {config.length}
+      <input
+        type="range"
+        name="length"
+        min="3"
+        max="99"
+        onChange={(e) =>
+          setConfig({
+            ...config,
+            length: parseInt(e.target.value),
+          })
+        }
+      />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

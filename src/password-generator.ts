@@ -1,6 +1,6 @@
 import sample from "lodash/sample";
 
-function generate_password(
+export default function generate_password(
   hasLowercase: boolean,
   hasUppercase: boolean,
   hasNumbers: boolean,
@@ -35,5 +35,3 @@ function generate_password(
 
   return password.join("");
 }
-
-console.log(generate_password(true, true, true, true, 26));
